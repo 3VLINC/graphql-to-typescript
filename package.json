@@ -1,13 +1,14 @@
 {
-  "name": "graphql-compiler",
+  "name": "graphql-to-typescript",
   "version": "0.1.0",
-  "description": "Compiles GraphQL files into an importable typescript module with type definitions",
+  "description": "Takes a glob of GraphQL files and writes a typescript module that exports the graphql type definitions as a string array and converts the graphql types to interfaces.",
   "main": "dist/index.js",
+  "typings": "dist/index",
   "author": "3VL INC.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:3VLINC/graphql-compiler.git"
+    "url": "git@github.com:3VLINC/graphql-to-typescript.git"
   },
   "dependencies": {
     "chalk": "^1.1.3",
@@ -26,15 +27,22 @@
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "rimraf": "^2.6.1",
-    "typescript": "^2.2.2"
+    "tslint": "^4.5.1",
+    "typescript": "^2.2.2",
+    "watch": "^1.0.2"
   },
   "scripts": {
+    "build": "tsc",
     "build:watch": "tsc -w",
+    "clean": "rimraf dist/*",
+    "prepublish": "npm run clean && npm run lint && npm run test && npm run build",
     "start": "npm run build:watch",
+    "pretest": "npm run clean && npm run build",
     "test": "mocha \"dist/**/*.test.js\"",
-    "test:watch:debug": "mocha \"dist/**/*.js\" -w --debug"
+    "test:watch": "watch --wait=1 'npm run test' src/",
+    "lint": "tslint src/**/*.ts"
   },
   "bin": {
-    "graphql-compiler": "./dist/index.js"
+    "graphql-to-typescript": "./dist/index.js"
   }
 }

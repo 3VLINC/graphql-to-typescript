@@ -10,70 +10,69 @@ import { CompileOptions } from './interfaces';
 export const compileGraphql = async (options: CompileOptions) => {
 
   return new Promise((resolve, reject) => {
-    
-      glob(options.dir, {}, async (er, files ) => {
-        
-        try {
-          
-          const typeDefs = [];
 
-          for(let file of files) {
+    glob(options.graphqlFileGlob, {}, async (er, files) => {
 
-            typeDefs.push(fs.readFileSync(file, 'utf8'));
+      try {
 
-          }
+        const output = [];
+        const typeDefs = [];
 
-          if (typeDefs.length === 0) {
+        for (let file of files) {
 
-            throw new Error(`No type definitions were found matching: ${options.dir}`);
+          typeDefs.push(fs.readFileSync(file, 'utf8'));
 
-          }
+        }
 
-          fs.writeFileSync(options.tsSchema, `const schema = ${JSON.stringify(typeDefs)};
-export { schema };`);
+        if (typeDefs.length === 0) {
 
-          const schema = makeExecutableSchema({ typeDefs });
+          throw new Error(`No type definitions were found matching: ${options.graphqlFileGlob}`);
 
+        }
 
-          const [introspectionResult, template] = await Promise.all(
-            [
-              graphql(schema, introspectionQuery),
-              getTemplateGenerator('typescript'),
-            ]
-          );
+        output.push(`export const schema = ${JSON.stringify(typeDefs)};`);
 
-          const introspection = introspectionResult.data;
-          
-          fs.writeFileSync(options.jsonSchema, JSON.stringify(introspection) );
+        const schema = makeExecutableSchema({ typeDefs });
 
-          const transformOptions = {
-            introspection,
-            documents: [],
-            template: template,
-            outPath: options.defSchema,
-            isDev: false,
-            noSchema: false,
-            noDocuments: true,
-          } as TransformedOptions; 
+        const [introspectionResult, template] = await Promise.all(
+          [
+            graphql(schema, introspectionQuery),
+            getTemplateGenerator('typescript'),
+          ]
+        );
 
-          const outFiles = await Transform(transformOptions);
+        const introspection = introspectionResult.data;
 
-          for(let file of outFiles) {
-            
-            fs.writeFileSync(file.path, file.content);
+        const transformOptions = {
+          introspection,
+          documents: [],
+          template: template,
+          outPath: './',
+          isDev: false,
+          noSchema: false,
+          noDocuments: true,
+        } as TransformedOptions;
 
-          }
+        const outFiles = await Transform(transformOptions);
 
-          resolve(files);
+        for (let file of outFiles) {
 
-           } catch (e) {
+          output.push(file.content);
 
-            reject(e);
+        }
 
-          }
+        fs.writeFileSync(options.outputFile, output.join('\n'));
 
-      });   
+        resolve();
+
+      } catch (e) {
+
+        reject(e);
+
+      }
+
+    });
 
   });
-  
+
 }
