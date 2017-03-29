@@ -1,0 +1,10 @@
+schema {
+  query: RootQuery
+}
+type RootQuery {
+  user(id: Int!): User
+}
+type User {
+  id: Int!
+  name: String
+}
