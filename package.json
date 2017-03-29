@@ -1,7 +1,7 @@
 {
   "name": "graphql-compiler",
   "version": "0.1.0",
-  "description": "Compiles .graphql files into an importable typescript module with type definitions",
+  "description": "Compiles GraphQL files into an importable typescript module with type definitions",
   "main": "dist/index.js",
   "author": "3VL INC.",
   "license": "MIT",
