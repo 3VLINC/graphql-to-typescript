@@ -1,8 +1,7 @@
 import * as fs from 'fs';
-import * as path from 'path';
 import * as glob from 'glob';
 import { graphql, introspectionQuery } from 'graphql';
-import { FileResult, Transform, TransformedOptions, getTemplateGenerator } from 'graphql-code-generator';
+import { Transform, TransformedOptions, getTemplateGenerator } from 'graphql-code-generator';
 import { makeExecutableSchema } from 'graphql-tools';
 
 import { CompileOptions } from './interfaces';
@@ -30,7 +29,7 @@ export const compileGraphql = async (options: CompileOptions) => {
 
         }
 
-        output.push(`export const schema = ${JSON.stringify(typeDefs)};`);
+        output.push(`export const typeDefs = ${JSON.stringify(typeDefs)};`);
 
         const schema = makeExecutableSchema({ typeDefs });
 

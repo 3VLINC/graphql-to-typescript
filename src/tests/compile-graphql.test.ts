@@ -7,7 +7,7 @@ import { CompileOptions } from '../interfaces';
 describe('Compiler', () => {
 
     const graphqlFileGlob = './src/tests/graphql/**/*.graphql';
-    const outputFile = './../../output/schema.ts';
+    const outputFile = './../../output/type-defs.ts';
     const outputFolder = './../../output';
 
     beforeEach(async () => {
@@ -42,7 +42,7 @@ describe('Compiler', () => {
       expect(tsSchema.indexOf('export interface RootQuery')).to.not.eql(-1);
       expect(tsSchema.indexOf('export interface User')).to.not.eql(-1);
       expect(tsSchema.indexOf('export interface UserRootQueryArgs')).to.not.eql(-1);
-      expect(tsSchema.indexOf('export const schema')).to.not.eql(-1);
+      expect(tsSchema.indexOf('export const typeDefs')).to.not.eql(-1);
 
     });
 

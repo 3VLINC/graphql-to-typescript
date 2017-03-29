@@ -30,7 +30,7 @@ type User {
 Into the typescript file:
 
 ```
-export const schema = ["schema {\n  query: RootQuery\n}\ntype RootQuery {\n  user(id: Int!): User\n}\ntype User {\n  id: Int!\n  name: String\n}\n"];
+export const typeDefs = ["schema {\n  query: RootQuery\n}\ntype RootQuery {\n  user(id: Int!): User\n}\ntype User {\n  id: Int!\n  name: String\n}\n"];
 
 export interface RootQuery {
   user: User | null;
