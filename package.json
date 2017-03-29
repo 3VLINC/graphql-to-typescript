@@ -5,6 +5,10 @@
   "main": "dist/index.js",
   "author": "3VL INC.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:3VLINC/graphql-compiler.git"
+  },
   "dependencies": {
     "commander": "^2.9.0",
     "graphql": "^0.9.1",
