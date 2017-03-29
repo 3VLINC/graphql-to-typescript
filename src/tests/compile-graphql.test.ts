@@ -11,6 +11,7 @@ describe('Compiler', () => {
     const out = "./src/tests/output/";
     const schemaFile = './src/tests/output/schema.json';
     const definitionFile = './src/tests/output/schema.d.ts';
+    const tsFile = './src/tests/output/schema.ts';
 
     beforeEach(async () => {
       
@@ -32,6 +33,7 @@ describe('Compiler', () => {
       const options = {
         defSchema: definitionFile,
         jsonSchema: schemaFile,
+        tsSchema: tsFile,
         dir: glob
       } as CompileOptions;
 
@@ -39,28 +41,7 @@ describe('Compiler', () => {
 
       const files = await fs.readdirSync(out);
 
-      expect(files.length).to.eql(2);
-
-      const graphqlTypingsContent = fs.readFileSync(options.defSchema, 'utf8');
-      const schemaObj = JSON.parse(fs.readFileSync(options.jsonSchema, 'utf8'));
-
-      expect(graphqlTypingsContent).to.eql(`
-export interface RootQuery {
-  user: User | null;
-}
-
-export interface UserRootQueryArgs {
-  id: number;
-}
-
-export interface User {
-  id: number;
-  name: string | null;
-}
-`     );
-  
-    expect(schemaObj.__schema.queryType.name).to.eql('RootQuery');
-
+      expect(files.length).to.eql(3);
 
     });
 

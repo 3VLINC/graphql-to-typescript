@@ -3,6 +3,7 @@ export interface CompileOptions {
   extension:string;
   defSchema:string;
   jsonSchema:string;
+  tsSchema:string;
 };
 
 

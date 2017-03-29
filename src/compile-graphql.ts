@@ -29,9 +29,11 @@ export const compileGraphql = async (options: CompileOptions) => {
 
           }
 
+          fs.writeFileSync(options.tsSchema, `const schema = ${JSON.stringify(typeDefs)};
+export { schema };`);
+
           const schema = makeExecutableSchema({ typeDefs });
 
-          
 
           const [introspectionResult, template] = await Promise.all(
             [

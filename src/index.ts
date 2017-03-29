@@ -6,16 +6,18 @@ import { compileGraphql } from './compile-graphql';
 
 commander
   .arguments('<dir>')
-  .option('-d, --definition <definition>', 'File to export the graphql typescript definition to','./schema.d.ts')
+  .option('-d, --def <def>', 'File to export the graphql typescript definition to','./schema.d.ts')
   .option('-j --json <json>', 'File to export the introspection json schema to', './schema.json')
+  .option('-t --ts <typescript>', 'File to export the graphql typescript module to', './schema.ts')
   .action(async (dir) => {
 
     try {
       
       const options = {
         dir,
-        defSchema: commander.definition,
-        jsonSchema: commander.json
+        defSchema: commander.def,
+        jsonSchema: commander.json,
+        tsSchema: commander.ts
       } as CompileOptions;
       
       await compileGraphql(options);
