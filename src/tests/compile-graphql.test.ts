@@ -30,8 +30,8 @@ describe('Compiler', () => {
     it('should compile the graphql file into a type definition file', async () => {
 
       const options = {
-        definition: definitionFile,
-        schema: schemaFile,
+        defSchema: definitionFile,
+        jsonSchema: schemaFile,
         dir: glob
       } as CompileOptions;
 
@@ -41,8 +41,8 @@ describe('Compiler', () => {
 
       expect(files.length).to.eql(2);
 
-      const graphqlTypingsContent = fs.readFileSync(options.definition, 'utf8');
-      const schemaObj = JSON.parse(fs.readFileSync(options.schema, 'utf8'));
+      const graphqlTypingsContent = fs.readFileSync(options.defSchema, 'utf8');
+      const schemaObj = JSON.parse(fs.readFileSync(options.jsonSchema, 'utf8'));
 
       expect(graphqlTypingsContent).to.eql(`
 export interface RootQuery {
