@@ -1,6 +1,5 @@
 export interface CompileOptions {
   graphqlFileGlob: string;
-  outputFile:string;
-};
-
-
+  outputFile: string;
+  skipTypeDefs: boolean;
+}

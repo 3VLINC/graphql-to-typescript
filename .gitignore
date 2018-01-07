@@ -6,3 +6,6 @@
 .DS_Store
 /output
 /.vscode
+/.nyc_output
+/coverage
+/tmp
