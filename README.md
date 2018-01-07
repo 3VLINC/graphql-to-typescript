@@ -4,7 +4,7 @@ Takes a glob of GraphQL files and writes a typescript module that exports the gr
 
 
 ```
-Usage: graphql-to-typescript \[options\] \<graphqlFileGlob\> \<outputFile\>
+Usage: graphql-to-typescript [options] <graphqlFileGlob> <outputFile>
 
   Options:
 
