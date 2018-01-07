@@ -7,8 +7,9 @@ import { CompileOptions } from '../interfaces';
 
 describe('Compiler', () => {
   const graphqlFileGlob = './src/tests/graphql/**/*.graphql';
-  const outputFile = './../../output/type-defs.ts';
-  const outputFolder = './../../output';
+  const falsyGraphqlFileGlob = './somewhere/else/**/*.graphql';
+  const outputFile = './tmp/type-defs.ts';
+  const outputFolder = './tmp';
 
   beforeEach(async () => {
     await new Promise((resolve, reject) => {
@@ -31,5 +32,28 @@ describe('Compiler', () => {
     expect(tsSchema.indexOf('export interface User')).to.not.eql(-1);
     expect(tsSchema.indexOf('export interface UserRootQueryArgs')).to.not.eql(-1);
     expect(tsSchema.indexOf('export const typeDefs')).to.not.eql(-1);
+  });
+
+  it('should throw an exception when no type definitions found in input file', () => {
+    const options = { outputFile, graphqlFileGlob: falsyGraphqlFileGlob } as CompileOptions;
+
+    return compileGraphql(options)
+      .then(() => {
+        throw new Error('compileGraphql call not supposed to be success');
+      })
+      .catch((error: Error) => {
+        expect(error.message).to.contains('No type definitions were found matching');
+      });
+  });
+
+  it('should skip typeDefs declaration when skipTypeDefs is true', async () => {
+    const options = { outputFile, graphqlFileGlob, skipTypeDefs: true } as CompileOptions;
+
+    await compileGraphql(options);
+    const files = await fs.readdirSync(outputFolder);
+    const tsSchema = fs.readFileSync(options.outputFile, 'utf8');
+
+    expect(files.length).to.eql(1);
+    expect(tsSchema).to.not.contains('export const typeDefs = ');
   });
 });

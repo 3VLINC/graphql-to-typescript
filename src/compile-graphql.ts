@@ -21,7 +21,9 @@ export const compileGraphql = async (options: CompileOptions) => {
           throw new Error(`No type definitions were found matching: ${options.graphqlFileGlob}`);
         }
 
-        output.push(`export const typeDefs = ${JSON.stringify(typeDefs)};`);
+        if (!options.skipTypeDefs) {
+          output.push(`export const typeDefs = ${JSON.stringify(typeDefs)};`);
+        }
 
         const schema = makeExecutableSchema({ typeDefs });
 

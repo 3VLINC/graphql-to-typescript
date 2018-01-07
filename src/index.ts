@@ -1,24 +1,14 @@
 #!/usr/bin/env node
-import * as chalk from 'chalk';
-import * as commander from 'commander';
-
+import { application, handler } from './application';
 import { compileGraphql } from './compile-graphql';
 import { CompileOptions } from './interfaces';
 
-commander
-  .arguments('<graphqlFileGlob> <outputFile>')
-  .action(async (graphqlFileGlob, outputFile) => {
-    try {
-      const options = { graphqlFileGlob, outputFile } as CompileOptions;
+const app = application();
 
-      await compileGraphql(options);
+app.action(handler).parse(process.argv);
 
-      // tslint:disable-next-line:no-console
-      console.info(chalk.bold.green('Graphql output files compiled'));
-    } catch (e) {
-      console.error(chalk.bold.red(e));
-    }
-  })
-  .parse(process.argv);
+if (!app.args.length) {
+  app.help();
+}
 
 export { CompileOptions, compileGraphql };
